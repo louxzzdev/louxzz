@@ -1,0 +1,67 @@
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../_layout.php';
+
+require_admin();
+
+$errors = [];
+$project = [
+    'name' => '',
+    'url' => '',
+    'description' => '',
+];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    [$project, $errors] = validate_project_input($_POST);
+
+    if (!csrf_is_valid()) {
+        $errors[] = 'Sessao invalida. Tenta outra vez.';
+    }
+
+    if (!$errors) {
+        $statement = db()->prepare('INSERT INTO projects (name, url, description) VALUES (:name, :url, :description)');
+        $statement->execute($project);
+        set_flash('Projeto criado com sucesso.');
+        redirect_to('/admin/dashboard.php');
+    }
+}
+
+admin_header('Criar projeto');
+?>
+<form class="formulario" method="post" action="/admin/projects/create.php" novalidate>
+    <p>Adiciona um projeto novo ao portfolio publico.</p>
+
+    <?php if ($errors): ?>
+        <ul class="erro-lista">
+            <?php foreach ($errors as $error): ?>
+                <li><?= e($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+
+    <?= csrf_input() ?>
+
+    <div class="campo">
+        <label for="name">Nome</label>
+        <input id="name" name="name" type="text" value="<?= e($project['name']) ?>" required minlength="2" maxlength="120">
+    </div>
+
+    <div class="campo">
+        <label for="url">URL</label>
+        <input id="url" name="url" type="url" value="<?= e($project['url']) ?>" required maxlength="255" placeholder="https://exemplo.com">
+    </div>
+
+    <div class="campo">
+        <label for="description">Descricao</label>
+        <textarea id="description" name="description" required maxlength="1000"><?= e($project['description']) ?></textarea>
+    </div>
+
+    <div class="acoes">
+        <button class="botao" type="submit">Guardar</button>
+        <a class="botao secundario" href="/admin/dashboard.php">Cancelar</a>
+    </div>
+</form>
+<?php
+admin_footer();
