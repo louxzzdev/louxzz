@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 const APP_DEBUG = false;
 const DB_HOST = 'localhost';
-const DB_NAME = 'louxzz_net';
-const DB_USER = 'louxzz_portfolio';
-const DB_PASS = 'GiggaNinja55%';
+const DB_NAME = 'louxzz_preview';
+const DB_USER = 'louxzz_preview';
+const DB_PASS = 'preview_local_only';
 const DB_CHARSET = 'utf8mb4';
 
 if (APP_DEBUG) {
@@ -44,6 +44,17 @@ function db(): PDO
 function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+/**
+ * Mostra um URL sem "https://" e sem barra final, só para ficar
+ * mais limpo visualmente nos cartões de projeto. O link continua
+ * a apontar para o URL completo, isto é só o texto visível.
+ */
+function display_url(string $url): string
+{
+    $clean = preg_replace('#^https?://#i', '', $url);
+    return rtrim((string)$clean, '/');
 }
 
 function start_app_session(): void
