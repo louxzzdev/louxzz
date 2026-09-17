@@ -1,36 +1,36 @@
 # louxzz.net
 
-Um portfolio simples e direto para mostrar projetos, ideias e experiencias feitas por louxzz.
+An understated portfolio for projects, experiments, and ideas by louxzz.
 
-> Dev de 14 anos com ideias a mais e tempo a menos.
+> Independent developer building focused digital products.
 
-## Sobre
+## About
 
-O louxzz.net e o meu espaco na web para reunir projetos que vou criando, testando e melhorando com o tempo.
+Louxzz.net is a home for projects I design, test, and refine over time.
 
-A ideia e simples: mostrar o que estou a construir, deixar cada projeto facil de encontrar e manter tudo rapido, limpo e sem complicacoes.
+The goal is simple: show what I am building, make every project easy to discover, and keep the experience fast, clear, and uncomplicated.
 
-## O Que Encontras
+## What you’ll find
 
-- Projetos pessoais.
-- Experiencias web.
-- Pequenas ferramentas.
-- Ideias em desenvolvimento.
-- Links diretos para cada projeto.
+- Personal projects.
+- Web experiments.
+- Useful small tools.
+- Ideas in progress.
+- Direct links to every project.
 
-## Projetos
+## Projects
 
-Cada projeto publicado inclui:
+Every published project includes:
 
-- Nome.
-- Link.
-- Descricao curta.
+- A name.
+- A link.
+- A short description.
 
-Alguns projetos podem estar finalizados, outros podem mudar bastante ao longo do tempo. Faz parte do processo.
+Some projects are complete; others will change substantially over time. That is part of the process.
 
-## Contacto
+## Contact
 
-Se quiseres falar comigo, dar feedback ou mostrar alguma ideia, podes usar o contacto disponivel no site.
+To talk, share feedback, or discuss an idea, use the contact details on the site.
 
 ## Site
 

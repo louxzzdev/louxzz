@@ -17,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = (string)($_POST['password'] ?? '');
 
     if (!csrf_is_valid()) {
-        $error = 'Sessao invalida. Tenta outra vez.';
+        $error = 'Your session is invalid. Please try again.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL) || $password === '') {
-        $error = 'Preenche os dados de acesso.';
+        $error = 'Enter your email and password.';
     } else {
         $statement = db()->prepare('SELECT id, name, email, password_hash FROM admins WHERE email = :email LIMIT 1');
         $statement->execute(['email' => $email]);
@@ -32,19 +32,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             redirect_to('/admin/dashboard.php');
         }
 
-        $error = 'Email ou password incorretos.';
+        $error = 'Incorrect email or password.';
     }
 }
 ?>
 <!doctype html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
     <title>Login - louxzz.net</title>
 
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230a0a0a'/><path d='M22 18 L42 32 L22 46' fill='none' stroke='%236366f1' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230b0c0e'/><path d='M22 18 L42 32 L22 46' fill='none' stroke='%23c9cdd3' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main class="pagina-login">
         <form class="login-caixa" method="post" action="/admin/login.php" autocomplete="on">
             <p class="sinal">Admin</p>
-            <h1>Entrar</h1>
-            <p>Acede ao painel para gerir os projetos do portfolio.</p>
+            <h1>Sign in</h1>
+            <p>Access the dashboard to manage your portfolio projects.</p>
 
             <?php if ($error): ?>
                 <div class="aviso"><?= e($error) ?></div>
@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="acoes">
-                <button class="botao" type="submit">Entrar</button>
-                <a class="botao secundario" href="/">Voltar</a>
+                <button class="botao" type="submit">Sign in</button>
+                <a class="botao secundario" href="/">Back to site</a>
             </div>
         </form>
     </main>

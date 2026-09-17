@@ -9,7 +9,7 @@ require_admin();
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!$id) {
-    set_flash('Projeto nao encontrado.', 'erro');
+    set_flash('Project not found.', 'erro');
     redirect_to('/admin/dashboard.php');
 }
 
@@ -18,7 +18,7 @@ $statement->execute(['id' => $id]);
 $project = $statement->fetch();
 
 if (!$project) {
-    set_flash('Projeto nao encontrado.', 'erro');
+    set_flash('Project not found.', 'erro');
     redirect_to('/admin/dashboard.php');
 }
 
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     [$projectData, $errors] = validate_project_input($_POST);
 
     if (!csrf_is_valid()) {
-        $errors[] = 'Sessao invalida. Tenta outra vez.';
+        $errors[] = 'Your session is invalid. Please try again.';
     }
 
     if (!$errors) {
@@ -39,17 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'description' => $projectData['description'],
             'id' => $id,
         ]);
-        set_flash('Projeto atualizado com sucesso.');
+        set_flash('Project updated successfully.');
         redirect_to('/admin/dashboard.php');
     }
 
     $project = array_merge($project, $projectData);
 }
 
-admin_header('Editar projeto');
+admin_header('Edit project');
 ?>
 <form class="formulario" method="post" action="/admin/projects/edit.php?id=<?= (int)$id ?>" novalidate>
-    <p>Atualiza os dados que aparecem no portfolio publico.</p>
+    <p>Update the details shown in the public portfolio.</p>
 
     <?php if ($errors): ?>
         <ul class="erro-lista">
@@ -62,7 +62,7 @@ admin_header('Editar projeto');
     <?= csrf_input() ?>
 
     <div class="campo">
-        <label for="name">Nome</label>
+        <label for="name">Name</label>
         <input id="name" name="name" type="text" value="<?= e($project['name']) ?>" required minlength="2" maxlength="120">
     </div>
 
@@ -72,13 +72,13 @@ admin_header('Editar projeto');
     </div>
 
     <div class="campo">
-        <label for="description">Descricao</label>
+        <label for="description">Description</label>
         <textarea id="description" name="description" required maxlength="1000"><?= e($project['description']) ?></textarea>
     </div>
 
     <div class="acoes">
-        <button class="botao" type="submit">Guardar</button>
-        <a class="botao secundario" href="/admin/dashboard.php">Cancelar</a>
+        <button class="botao" type="submit">Save changes</button>
+        <a class="botao secundario" href="/admin/dashboard.php">Cancel</a>
     </div>
 </form>
 <?php

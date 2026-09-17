@@ -17,21 +17,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     [$project, $errors] = validate_project_input($_POST);
 
     if (!csrf_is_valid()) {
-        $errors[] = 'Sessao invalida. Tenta outra vez.';
+        $errors[] = 'Your session is invalid. Please try again.';
     }
 
     if (!$errors) {
         $statement = db()->prepare('INSERT INTO projects (name, url, description) VALUES (:name, :url, :description)');
         $statement->execute($project);
-        set_flash('Projeto criado com sucesso.');
+        set_flash('Project created successfully.');
         redirect_to('/admin/dashboard.php');
     }
 }
 
-admin_header('Criar projeto');
+admin_header('Create project');
 ?>
 <form class="formulario" method="post" action="/admin/projects/create.php" novalidate>
-    <p>Adiciona um projeto novo ao portfolio publico.</p>
+    <p>Add a new project to the public portfolio.</p>
 
     <?php if ($errors): ?>
         <ul class="erro-lista">
@@ -44,23 +44,23 @@ admin_header('Criar projeto');
     <?= csrf_input() ?>
 
     <div class="campo">
-        <label for="name">Nome</label>
+        <label for="name">Name</label>
         <input id="name" name="name" type="text" value="<?= e($project['name']) ?>" required minlength="2" maxlength="120">
     </div>
 
     <div class="campo">
         <label for="url">URL</label>
-        <input id="url" name="url" type="url" value="<?= e($project['url']) ?>" required maxlength="255" placeholder="https://exemplo.com">
+        <input id="url" name="url" type="url" value="<?= e($project['url']) ?>" required maxlength="255" placeholder="https://example.com">
     </div>
 
     <div class="campo">
-        <label for="description">Descricao</label>
+        <label for="description">Description</label>
         <textarea id="description" name="description" required maxlength="1000"><?= e($project['description']) ?></textarea>
     </div>
 
     <div class="acoes">
-        <button class="botao" type="submit">Guardar</button>
-        <a class="botao secundario" href="/admin/dashboard.php">Cancelar</a>
+        <button class="botao" type="submit">Save project</button>
+        <a class="botao secundario" href="/admin/dashboard.php">Cancel</a>
     </div>
 </form>
 <?php

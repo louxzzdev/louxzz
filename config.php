@@ -35,7 +35,7 @@ function db(): PDO
     } catch (PDOException $exception) {
         error_log($exception->getMessage());
         http_response_code(500);
-        exit('Erro ao ligar a base de dados.');
+        exit('Unable to connect to the database.');
     }
 
     return $pdo;
@@ -47,9 +47,8 @@ function e(?string $value): string
 }
 
 /**
- * Mostra um URL sem "https://" e sem barra final, só para ficar
- * mais limpo visualmente nos cartões de projeto. O link continua
- * a apontar para o URL completo, isto é só o texto visível.
+ * Display URLs without their scheme or trailing slash. The destination itself
+ * remains the complete URL.
  */
 function display_url(string $url): string
 {
@@ -161,21 +160,21 @@ function validate_project_input(array $source): array
     $errors = [];
 
     if (text_length($name) < 2 || text_length($name) > 120) {
-        $errors[] = 'O nome deve ter entre 2 e 120 caracteres.';
+        $errors[] = 'Name must be between 2 and 120 characters.';
     }
 
     if (text_length($url) > 255 || !filter_var($url, FILTER_VALIDATE_URL)) {
-        $errors[] = 'Indica um URL valido.';
+        $errors[] = 'Enter a valid URL.';
     } else {
         $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
 
         if (!in_array($scheme, ['http', 'https'], true)) {
-            $errors[] = 'O URL deve comecar por http:// ou https://.';
+            $errors[] = 'The URL must begin with http:// or https://.';
         }
     }
 
     if (text_length($description) < 3 || text_length($description) > 1000) {
-        $errors[] = 'A descricao deve ter entre 3 e 1000 caracteres.';
+        $errors[] = 'Description must be between 3 and 1000 characters.';
     }
 
     return [

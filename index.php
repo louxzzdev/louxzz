@@ -3,33 +3,31 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/config.php';
 
-// Vai buscar todos os projetos guardados na base de dados (geridos pelo /admin),
-// dos mais recentes para os mais antigos.
+// Fetch projects managed through /admin, newest first.
 $projects = db()
     ->query('SELECT name, url, description FROM projects ORDER BY created_at DESC, id DESC')
     ->fetchAll();
 ?>
 <!doctype html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>louxzz — Dev de 14 anos com ideias a mais e tempo a menos.</title>
-    <meta name="description" content="Portfolio de louxzz: projetos pequenos, rapidos e diretos. Conhece o schedlio, o thegamercave e o cagating.">
-    <meta name="theme-color" content="#0a0a0a">
+    <title>louxzz — Independent developer building focused digital products.</title>
+    <meta name="description" content="The portfolio of louxzz — focused digital products, web experiments, and ideas in progress.">
+    <meta name="theme-color" content="#0b0c0e">
 
     <!-- Open Graph: controla a pre-visualizacao quando partilhas o link (WhatsApp, X, Discord...) -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="louxzz — Dev de 14 anos com ideias a mais e tempo a menos.">
-    <meta property="og:description" content="Construo projetos pequenos, rapidos e diretos, sempre com vontade de experimentar mais uma ideia.">
+    <meta property="og:title" content="louxzz — Independent developer building focused digital products.">
+    <meta property="og:description" content="Focused digital products, web experiments, and ideas in progress.">
     <meta property="og:url" content="https://louxzz.net">
-    <!-- placeholder: substitui por uma imagem real (1200x630px) quando tiveres uma -->
+    <!-- Replace this placeholder with a real 1200×630 social image when available. -->
     <meta property="og:image" content="/assets/img/og-cover.png">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- Favicon: um ">" desenhado em SVG direto aqui, sem precisar de ficheiro de imagem -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230a0a0a'/><path d='M22 18 L42 32 L22 46' fill='none' stroke='%236366f1' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230b0c0e'/><path d='M22 18 L42 32 L22 46' fill='none' stroke='%23c9cdd3' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 
     <!-- Fontes do Google Fonts: Space Grotesk (titulos), Inter (texto), JetBrains Mono (detalhes) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,42 +39,42 @@ $projects = db()
 <body>
     <header class="topo">
         <a class="marca" href="/">louxzz.net</a>
-        <nav class="menu" aria-label="Navegacao principal">
-            <a href="#projetos">Projetos</a>
-            <a href="/contacto.php">Contacto</a>
+        <nav class="menu" aria-label="Primary navigation">
+            <a href="#projects">Projects</a>
+            <a href="/contacto.php">Contact</a>
         </nav>
     </header>
 
     <main>
         <section class="hero">
-            <!-- Camada decorativa (grelha de pontos + brilho animado). Puramente visual. -->
+            <!-- Decorative dot grid and ambient glow. -->
             <div class="hero-fundo" aria-hidden="true"></div>
 
             <div class="hero-conteudo">
-                <p class="sinal">// Portfolio</p>
+                <p class="sinal">// Independent developer</p>
                 <h1 class="hero-nome">louxzz<span class="cursor">_</span></h1>
-                <p class="hero-tagline">Dev de 14 anos com ideias a mais e tempo a menos.</p>
-                <p class="hero-descricao">Construo projetos pequenos, rapidos e diretos, sempre com vontade de experimentar mais uma ideia.</p>
+                <p class="hero-tagline">Building focused digital products, one sharp idea at a time.</p>
+                <p class="hero-descricao">I design and ship considered web experiences, useful tools, and experiments that turn ambitious ideas into something real.</p>
                 <div class="acoes">
-                    <a class="botao" href="#projetos">Ver projetos</a>
-                    <a class="botao secundario" href="/contacto.php">Falar comigo</a>
+                    <a class="botao" href="#projects">View projects</a>
+                    <a class="botao secundario" href="/contacto.php">Get in touch</a>
                 </div>
             </div>
 
-            <aside class="resumo" aria-label="Resumo">
+            <aside class="resumo" aria-label="Creative statement">
                 <span>louxzz</span>
-                <strong>Pensamentos inúteis, ideias úteis.</strong>
+                <strong>Clear thinking.<br>Useful work.</strong>
             </aside>
         </section>
 
-        <section class="secao" id="projetos">
+        <section class="secao" id="projects">
             <div class="secao-cabeca">
-                <p class="sinal">// Projetos</p>
-                <h2>Coisas que ando a criar</h2>
+                <p class="sinal">// Selected work</p>
+                <h2>What I’m building</h2>
             </div>
 
             <?php if (!$projects): ?>
-                <p class="vazio">Ainda nao ha projetos publicados.</p>
+                <p class="vazio">No projects have been published yet.</p>
             <?php else: ?>
                 <div class="grelha">
                     <?php foreach ($projects as $index => $project): ?>
@@ -98,13 +96,12 @@ $projects = db()
     <footer class="rodape">
         <div class="rodape-texto">
             <span>louxzz.net</span>
-            <span>Feito com PHP, MySQL e música ambiente.</span>
+            <span>Built with PHP, MySQL, and ambient music.</span>
         </div>
-        <!-- Edita estes links: troca pelo teu GitHub, email ou outras redes sociais -->
-        <nav class="rodape-links" aria-label="Redes e contacto">
+        <nav class="rodape-links" aria-label="Social links and contact">
             <a href="https://github.com/louxzzdev" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="mailto:lourenco@louxzz.net">Email</a>
-            <a href="/contacto.php">Contacto</a>
+            <a href="/contacto.php">Contact</a>
         </nav>
     </footer>
 

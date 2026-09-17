@@ -10,19 +10,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 if (!csrf_is_valid()) {
-    set_flash('Sessao invalida. Tenta outra vez.', 'erro');
+    set_flash('Your session is invalid. Please try again.', 'erro');
     redirect_to('/admin/dashboard.php');
 }
 
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 
 if (!$id) {
-    set_flash('Projeto nao encontrado.', 'erro');
+    set_flash('Project not found.', 'erro');
     redirect_to('/admin/dashboard.php');
 }
 
 $statement = db()->prepare('DELETE FROM projects WHERE id = :id');
 $statement->execute(['id' => $id]);
 
-set_flash('Projeto apagado com sucesso.');
+set_flash('Project deleted successfully.');
 redirect_to('/admin/dashboard.php');

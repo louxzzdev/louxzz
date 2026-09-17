@@ -1,12 +1,10 @@
 /**
- * JS mínimo do site — só duas coisas, de propósito:
+ * Minimal site JavaScript, intentionally limited to two things:
  *
- * 1. Revelar os cartões de projeto com um pequeno fade-in quando
- *    entram no ecrã ao fazer scroll.
- * 2. Respeitar quem desativou animações no sistema (acessibilidade).
+ * 1. Reveal project cards with a small fade-in as they enter the viewport.
+ * 2. Respect system-level reduced-motion preferences.
  *
- * O scroll suave para "#projetos" já é feito só com CSS
- * (ver `scroll-behavior: smooth` em style.css), não precisa de JS.
+ * Smooth scrolling is handled by CSS; it does not need JavaScript.
  */
 
 (function () {
@@ -20,8 +18,7 @@
 
     var prefereMenosMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Sem suporte a IntersectionObserver (browsers muito antigos) ou
-    // com animações desativadas: mostra tudo já, sem efeito nenhum.
+    // For unsupported browsers or reduced motion, show every card immediately.
     if (prefereMenosMovimento || !('IntersectionObserver' in window)) {
         return;
     }
