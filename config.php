@@ -1,12 +1,18 @@
 <?php
 declare(strict_types=1);
 
-const APP_DEBUG = false;
-const DB_HOST = 'localhost';
-const DB_NAME = 'louxzz_preview';
-const DB_USER = 'louxzz_preview';
-const DB_PASS = 'preview_local_only';
-const DB_CHARSET = 'utf8mb4';
+$localConfigPath = __DIR__ . '/config.local.php';
+$localConfig = is_file($localConfigPath) ? require $localConfigPath : [];
+$localConfig = is_array($localConfig) ? $localConfig : [];
+
+define('APP_DEBUG', (bool)($localConfig['app_debug'] ?? false));
+define('DB_HOST', (string)($localConfig['db_host'] ?? (getenv('DB_HOST') ?: 'localhost')));
+define('DB_NAME', (string)($localConfig['db_name'] ?? (getenv('DB_NAME') ?: '')));
+define('DB_USER', (string)($localConfig['db_user'] ?? (getenv('DB_USER') ?: '')));
+define('DB_PASS', (string)($localConfig['db_pass'] ?? (getenv('DB_PASS') ?: '')));
+define('DB_CHARSET', 'utf8mb4');
+
+unset($localConfig, $localConfigPath);
 
 if (APP_DEBUG) {
     ini_set('display_errors', '1');
@@ -35,7 +41,7 @@ function db(): PDO
     } catch (PDOException $exception) {
         error_log($exception->getMessage());
         http_response_code(500);
-        exit('Unable to connect to the database.');
+        exit('unable to connect to the database.');
     }
 
     return $pdo;
@@ -46,14 +52,14 @@ function e(?string $value): string
     return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-/**
- * Display URLs without their scheme or trailing slash. The destination itself
- * remains the complete URL.
- */
-function display_url(string $url): string
+function safe_external_url(string $url): string
 {
-    $clean = preg_replace('#^https?://#i', '', $url);
-    return rtrim((string)$clean, '/');
+    if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        return '';
+    }
+
+    $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
+    return in_array($scheme, ['http', 'https'], true) ? $url : '';
 }
 
 function start_app_session(): void
@@ -62,8 +68,11 @@ function start_app_session(): void
         return;
     }
 
-    $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+    $forwardedProto = strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''));
+    $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $forwardedProto === 'https';
 
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.use_only_cookies', '1');
     session_name('louxzz_session');
     session_set_cookie_params([
         'lifetime' => 0,
@@ -87,7 +96,7 @@ function require_admin(): void
     start_app_session();
 
     if (empty($_SESSION['admin_id'])) {
-        redirect_to('/admin/login.php');
+        redirect_to('/dash/login');
     }
 }
 
@@ -115,7 +124,7 @@ function csrf_is_valid(): bool
     return $token !== '' && !empty($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
 
-function set_flash(string $message, string $type = 'sucesso'): void
+function set_flash(string $message, string $type = 'success'): void
 {
     start_app_session();
     $_SESSION['flash'] = [
@@ -160,21 +169,21 @@ function validate_project_input(array $source): array
     $errors = [];
 
     if (text_length($name) < 2 || text_length($name) > 120) {
-        $errors[] = 'Name must be between 2 and 120 characters.';
+        $errors[] = 'name must be between 2 and 120 characters.';
     }
 
     if (text_length($url) > 255 || !filter_var($url, FILTER_VALIDATE_URL)) {
-        $errors[] = 'Enter a valid URL.';
+        $errors[] = 'enter a valid url.';
     } else {
         $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
 
         if (!in_array($scheme, ['http', 'https'], true)) {
-            $errors[] = 'The URL must begin with http:// or https://.';
+            $errors[] = 'the url must begin with http:// or https://.';
         }
     }
 
     if (text_length($description) < 3 || text_length($description) > 1000) {
-        $errors[] = 'Description must be between 3 and 1000 characters.';
+        $errors[] = 'description must be between 3 and 1000 characters.';
     }
 
     return [

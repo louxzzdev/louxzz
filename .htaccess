@@ -1,0 +1,31 @@
+Options -Indexes
+DirectoryIndex index.php
+
+RewriteEngine On
+RewriteBase /
+
+# canonical public routes
+RewriteRule ^contact/?$ contact.php [L,QSA]
+
+# clean dashboard routes
+RewriteRule ^dash/?$ dash/index.php [L,QSA]
+RewriteRule ^dash/login/?$ dash/login.php [L,QSA]
+RewriteRule ^dash/logout/?$ dash/logout.php [L,QSA]
+RewriteRule ^dash/projects/new/?$ dash/projects/create.php [L,QSA]
+RewriteRule ^dash/projects/edit/?$ dash/projects/edit.php [L,QSA]
+RewriteRule ^dash/projects/delete/?$ dash/projects/delete.php [L,QSA]
+
+ErrorDocument 404 /404.php
+
+<FilesMatch "^(config(?:\.local)?\.php|database\.sql|hash\.php)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set X-Frame-Options "DENY"
+    <FilesMatch "\.(css|svg)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>

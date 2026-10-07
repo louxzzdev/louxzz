@@ -1,0 +1,10 @@
+<?php
+declare(strict_types=1);
+
+return [
+    'app_debug' => false,
+    'db_host' => 'localhost',
+    'db_name' => 'louxzz_net',
+    'db_user' => 'database_user',
+    'db_pass' => 'use_a_strong_password_here',
+];

@@ -1,37 +1,36 @@
 # louxzz.net
 
-An understated portfolio for projects, experiments, and ideas by louxzz.
+A minimal, server-rendered PHP portfolio with a small authenticated project dashboard.
 
-> Independent developer building focused digital products.
+## requirements
 
-## About
+- PHP 8.0 or newer with PDO MySQL
+- MySQL or MariaDB
+- Apache with `mod_rewrite` and `mod_headers` enabled
 
-Louxzz.net is a home for projects I design, test, and refine over time.
+No package manager, JavaScript runtime, or build step is required.
 
-The goal is simple: show what I am building, make every project easy to discover, and keep the experience fast, clear, and uncomplicated.
+## setup
 
-## What you’ll find
+1. Copy `config.php.example` to `config.local.php` and set the database credentials.
+2. Import `database.sql` only for a new installation. Do not import it over production data.
+3. Point the domain document root at this directory.
+4. Ensure Apache allows `.htaccess` overrides (`AllowOverride All`).
+5. Serve the production site over HTTPS.
 
-- Personal projects.
-- Web experiments.
-- Useful small tools.
-- Ideas in progress.
-- Direct links to every project.
+`config.local.php` and `database.sql` are ignored by Git and denied by Apache. `config.php` contains only application helpers and safe environment-variable fallbacks.
 
-## Projects
+## routes
 
-Every published project includes:
+- `/` — portfolio
+- `/contact` — contact links
+- `/dash` — dashboard or login redirect
+- `/dash/projects/new` — create a project
+- `/dash/projects/edit?id=1` — edit a project
+- `/dash/projects/delete?id=1` — confirm project deletion
 
-- A name.
-- A link.
-- A short description.
+Legacy `/contacto.php` and `/admin/*.php` entry points redirect to the clean routes.
 
-Some projects are complete; others will change substantially over time. That is part of the process.
+## data
 
-## Contact
-
-To talk, share feedback, or discuss an idea, use the contact details on the site.
-
-## Site
-
-[louxzz.net](https://louxzz.net)
+Projects are always read from and written to the existing `projects` table. This redesign does not require a database migration.
